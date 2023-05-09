@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import axios from 'axios';
+import { Services } from './services/services';
 
 const styles = StyleSheet.create({
   center: {
@@ -11,12 +11,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const GetData = async () =>
-{
-  const url:string = 'https://api.themoviedb.org/3/movie/popular?api_key=c19e6fff2c0692083ad7640cecadab90'
-  const resp = await axios.get(url);
-  return resp.data.results;
-}
 
 const App = () => {
   const [movieTitle, setMovieTitle] = useState('');
@@ -25,7 +19,7 @@ const App = () => {
   //set movieTitle to the title of that return.
   //useEffect makes sure that this process only occurs one time.
   useEffect(() => {
-    GetData().then(movie => {
+    Services().then(movie => {
     setMovieTitle(movie[0].original_title);
   }).catch(err => {setError(err)});
 }, []);
