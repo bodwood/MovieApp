@@ -18,7 +18,7 @@ const GetData = async () =>
 {
   const url:string = 'https://api.themoviedb.org/3/movie/popular?api_key=c19e6fff2c0692083ad7640cecadab90'
   const resp = await axios.get(url);
-  console.log(JSON.stringify(resp.data.results[0], null, 2));
+  return resp.data.results;
 }
 
 const Greeting = (props: GreetingProps) => {
@@ -30,7 +30,9 @@ const Greeting = (props: GreetingProps) => {
 };
 
 const LotsOfGreetings = () => {
-  GetData()
+  GetData().then(movie => {
+    console.log(movie[0]);
+  })
   return (
     <View style={[styles.center, {top: 50}]}>
       <Greeting name="Rexxar" />
