@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import axios from 'axios';
-import { useEffect } from 'react';
 
 const styles = StyleSheet.create({
   center: {
@@ -24,20 +23,25 @@ const GetData = async () =>
 const Greeting = (props: GreetingProps) => {
   return (
     <View style={styles.center}>
-      <Text>Hello {props.name}!</Text>
+      <Text>{props.name}!</Text>
     </View>
   );
 };
 
 const LotsOfGreetings = () => {
-  GetData().then(movie => {
-    console.log(movie[0]);
-  })
+  const [movieTitle, setMovieTitle] = useState('');
+  //Promise will grab the first movie from the API and
+  //set movieTitle to the title of that return.
+  //useEffect makes sure that this process only occurs one time.
+  useEffect(() => {
+    GetData().then(movie => {
+    setMovieTitle(movie[0].original_title);
+  });
+}, []);
+  
   return (
     <View style={[styles.center, {top: 50}]}>
-      <Greeting name="Rexxar" />
-      <Greeting name="Jaina" />
-      <Greeting name="Valeera" />
+      <Greeting name={movieTitle} />
     </View>
   );
 };
