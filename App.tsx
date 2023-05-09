@@ -6,12 +6,10 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
   },
+  errorStyle: {
+    color: 'red'
+  }
 });
-
-type GreetingProps = {
-  name: string;
-};
-
 
 const GetData = async () =>
 {
@@ -20,30 +18,23 @@ const GetData = async () =>
   return resp.data.results;
 }
 
-const Greeting = (props: GreetingProps) => {
-  return (
-    <View style={styles.center}>
-      <Text>{props.name}!</Text>
-    </View>
-  );
-};
-
-const LotsOfGreetings = () => {
+const App = () => {
   const [movieTitle, setMovieTitle] = useState('');
+  const [error, setError] = useState(false);
   //Promise will grab the first movie from the API and
   //set movieTitle to the title of that return.
   //useEffect makes sure that this process only occurs one time.
   useEffect(() => {
     GetData().then(movie => {
     setMovieTitle(movie[0].original_title);
-  });
+  }).catch(err => {setError(err)});
 }, []);
   
   return (
     <View style={[styles.center, {top: 50}]}>
-      <Greeting name={movieTitle} />
+      {error ? <Text style={[styles.errorStyle]}>Error in the system</Text> : <Text>{movieTitle}</Text>}
     </View>
   );
 };
 
-export default LotsOfGreetings;
+export default App;
